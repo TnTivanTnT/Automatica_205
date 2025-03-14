@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{8bc1eea5-9690-4a34-bea8-040af1538968}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    PulsadorEmergencia AT %I* : BOOL;
+    SelectorManual AT %I* : BOOL;
+    PulsadorMarcha AT %I* : BOOL;
+    PulsadorParada AT %I* : BOOL;
+    EstacionConectada AT %I* : BOOL;
+    PresenciaPale AT %I* : BOOL;
+    CodigoPaleBit0 AT %I* : BOOL;
+    CodigoPaleBit1 AT  %I* : BOOL;
+    
+    CodigoPaleBit2 AT %I* : BOOL;
+    
+    DesconectaEstacion AT %Q* : BOOL;
+    LamparaAlarma AT %Q* : BOOL;
+    LamparaMarcha AT %Q* : BOOL;
+    LamparaMaterial AT %Q* : BOOL;
+    CintaActiva AT %Q* : BOOL;
+    CintaInvierte AT %Q* : BOOL;
+    RetenedorBaja AT %Q* : BOOL;
+    
+    AvisadorSonoro AT %Q* : BOOL;
+    
+    CargadorDetras AT %I* : BOOL;
+    CargadorDelante AT %I* : BOOL;
+    CargadorArriba AT %I* : BOOL;
+    CargadorAbajo AT %I* : BOOL;
+    PlatoEmpujadorDetras AT %I* : BOOL;
+    RechazadorDetras AT %I* : BOOL;
+    RechazadorDelante AT %I* : BOOL;
+    RechazadorArriba AT %I* : BOOL;
+    
+    RechazadorVacio AT %I* : BOOL;
+    DescargadorDetras AT %I* : BOOL;
+    DescargadorDelante AT %I* : BOOL;
+    DescargadorArriba AT %I* : BOOL;
+    DescargadorAbajo AT %I* : BOOL;
+    AlimentadorDelante AT %I* : BOOL;
+    DetectorInductivo AT %I* : BOOL;
+    DetectorFotoelectrico AT %I* : BOOL;
+    
+    CargadorAvanza AT %Q* : BOOL;
+    CargadorBaja AT %Q* : BOOL;
+    CargadorCierra AT %Q* : BOOL;
+    PlatoEmpujadorAvanza AT %Q* : BOOL;
+    PlatoRetenedorAtras AT %Q* : BOOL;
+    RechazadorAvanza AT %Q* : BOOL;
+    RechazadorRetrocede AT %Q* : BOOL;
+    RechazadorBaja AT %Q* : BOOL;
+    
+    RechazadorSucciona AT %Q* : BOOL;
+    DescargadorAvanza AT %Q* : BOOL;
+    DescargadorBaja AT %Q* : BOOL;
+    DescargadorCierra AT %Q* : BOOL;
+    AlimentadorAvanza AT %Q* : BOOL;
+    MedidorBaja AT %Q* : BOOL;
+    VolteadorBaja AT %Q* : BOOL;
+    VolteadorGira AT %Q* : BOOL;
+    
+    VolteadorArriba AT %I* : BOOL;
+    VolteadorAbajo AT %I* : BOOL;
+    VolteadorDetras AT %I* : BOOL;
+    VoteadorDelante AT %I* : BOOL;
+    
+    VolteadorCierra AT %Q* : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[DesconectaEstacion:=PulsadorEmergencia;
+
+LamparaMarcha := PulsadorMarcha;
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="78" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="77" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
