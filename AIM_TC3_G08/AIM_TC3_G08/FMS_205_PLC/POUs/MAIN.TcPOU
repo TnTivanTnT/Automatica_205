@@ -69,14 +69,9 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[DesconectaEstacion:=PulsadorEmergencia;
-
-LamparaMarcha := PulsadorMarcha;
-]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="78" Count="1" />
-      <LineId Id="2" Count="0" />
       <LineId Id="77" Count="0" />
     </LineIds>
   </POU>
