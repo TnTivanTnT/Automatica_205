@@ -1,4 +1,3 @@
-<<<<<<< HEAD:AIM_TC3_G08-Manual/AIM_TC3_G08/TrialLicense.tclrs
 <?xml version="1.0"?>
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
@@ -23,29 +22,3 @@
 		</License>
 	</LicenseInfo>
 </TcLicenseInfo>
-=======
-<?xml version="1.0"?>
-<TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
-	<LicenseInfo>
-		<SystemId>{BF47D248-6FE6-1D8C-EC9F-AF69C4EF8074}</SystemId>
-		<IssueTime>2025-03-18T10:27:00</IssueTime>
-		<ExpireTime>2025-03-26T00:00:00</ExpireTime>
-		<LicenseKey>002f7a3729f5c7e9341e02b1abb064f70a11bbffcc9646ed8c0527518f09153bca85a17a73b31e595749e142e13397ea003e977682affe79dd483c206683f2d2f20928483fb9beab76eadd6acf4a8e2266d0332b67147deb260192c277e6014db9f8f8357bed3d282f756ec40bf6e7704c7e52fa896b242ebf28e4e2d1f9bf118d6156ffc8bcdc43f0f351bd6425d5554940aba51ec89b31005945e765c77084c1e11b56411d79e32a57d012d37253004445724e2a89b183bcb2e8f2a9750dd63836b3b78daa42ef8e969fda31b375d6ce6effd1619f57239814be614c483144b813858195459339b14b7915ba4ad5210b0b6e9d44e3b3c9ea17a974c319f540</LicenseKey>
-		<License>
-			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
-			<Name>TC3 ADS</Name>
-			<OrderNo>TC1000</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
-			<Name>TC3 IO</Name>
-			<OrderNo>TC1100</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
-			<Name>TC3 PLC</Name>
-			<OrderNo>TC1200</OrderNo>
-		</License>
-	</LicenseInfo>
-</TcLicenseInfo>
->>>>>>> 4844f53bdb681eb63a15e8ff70868af153357fd4:AIM_TC3_G08/AIM_TC3_G08/TrialLicense.tclrs

@@ -1,21 +1,9 @@
-<<<<<<< HEAD:AIM_TC3_G08-Manual/AIM_TC3_G08/_Boot/TargetDescription.xml
 <?xml version="1.0"?>
 <TcTargetDesc>
 	<TargetVersion>
 		<Version>3</Version>
 		<Revision>1</Revision>
-		<Build>4024</Build>
-		<Subbuild>50</Subbuild>
+		<Build>4022</Build>
+		<Subbuild>29</Subbuild>
 	</TargetVersion>
 </TcTargetDesc>
-=======
-<?xml version="1.0"?>
-<TcTargetDesc>
-	<TargetVersion>
-		<Version>3</Version>
-		<Revision>1</Revision>
-		<Build>4024</Build>
-		<Subbuild>22</Subbuild>
-	</TargetVersion>
-</TcTargetDesc>
->>>>>>> 4844f53bdb681eb63a15e8ff70868af153357fd4:AIM_TC3_G08/AIM_TC3_G08/_Boot/TargetDescription.xml
