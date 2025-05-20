@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Estacion_1" Id="{a1de3ee5-be0e-4e8e-88c5-c42eec592c94}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Estacion_1
+
+VAR_INPUT
+    // SFC-Flags
+    SFCPause: BOOL;
+    SFCReset: BOOL;
+    
+    PulsadorEmergencia AT %I* : BOOL;
+    SelectorManual AT %I* : BOOL;
+    PulsadorMarcha AT %I* : BOOL;
+    PulsadorParada AT %I* : BOOL;
+    EstacionConectada AT %I* : BOOL;
+    CodigoPaleBit0 AT %I* : BOOL;
+    CodigoPaleBit1 AT  %I* : BOOL;
+    
+    CodigoPaleBit2 AT %I* : BOOL;
+ 
+    
+    // Sincronizacion
+    Benido: BOOL := TRUE;
+    Ejecuta: BOOL;
+    
+    // Parametros de tiempo
+    TpoCintaRetenedor: TIME := T#1S;
+    TpoPaleSalida: TIME := T#1S;
+    TpoPaleTransferencia: TIME := T#1S;
+
+    PresenciaPale AT %I* : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    // Parametros de; estado de la estacion
+    CondicionInicial: BOOL:=TRUE;
+    CondicionMarcha: BOOL:=TRUE;
+    CodigoPale: BYTE;  
+	//Medir: BOOL := FALSE;
+    
+    // Parametros de control de la tarea 
+    //UnidadesPendientes: UINT;
+    //UnidadesRealizadas: UINT;
+   
+
+	
+	DesconectaEstacion AT %Q* : BOOL;
+    LamparaAlarma AT %Q* : BOOL;
+    LamparaMarcha AT %Q* : BOOL;
+    LamparaMaterial AT %Q* : BOOL;
+    CintaActiva AT %Q* : BOOL;
+    CintaInvierte AT %Q* : BOOL;
+    RetenedorBaja AT %Q* : BOOL;
+    
+    AvisadorSonoro AT %Q* : BOOL;
+  	CargadorAvanza AT %Q* : BOOL;
+    CargadorBaja AT %Q* : BOOL;
+    CargadorCierra AT %Q* : BOOL;
+    PlatoEmpujadorAvanza AT %Q* : BOOL;
+    PlatoRetenedorAtras AT %Q* : BOOL;
+    RechazadorAvanza AT %Q* : BOOL;
+    RechazadorRetrocede AT %Q* : BOOL;
+    RechazadorBaja AT %Q* : BOOL;
+    
+    RechazadorSucciona AT %Q* : BOOL;
+    DescargadorAvanza AT %Q* : BOOL;
+    DescargadorBaja AT %Q* : BOOL;
+    DescargadorCierra AT %Q* : BOOL;
+    AlimentadorAvanza AT %Q* : BOOL;
+    MedidorBaja AT %Q* : BOOL;
+    VolteadorBaja AT %Q* : BOOL;
+    VolteadorGira AT %Q* : BOOL;
+    VolteadorCierra AT %Q* : BOOL;
+END_VAR
+
+VAR
+    // Tapas: (METALICAS, BLANCAS, NEGRAS, ALTAS, BAJAS);
+    Tapas : ARRAY[0..7] OF ST_POSICION;
+    TapaAuxRot : ST_POSICION; 
+    CLK: FB_Clock;
+    TapaDeseada : ST_TAPA;
+    NumPiezasDes: UINT;
+    cont: UINT;
+    // Bloques funcionales
+    Coordinador: FB_Coordinador_SFC;
+    Alimentar: FB_Alimentar_SFC;
+    Cargar: FB_Cargar_SFC;
+    Descargar: FB_Descargar_SFC;
+    Girar: FB_Girar_SFC;
+    Medir: FB_Medir_SFC;
+    Rechazar : FB_Rechazar_SFC;
+	SituarPale : FB_SituarPale_SFC;
+	TransferirPale : FB_TransferirPale_SFC;
+    ReiniciaEstado: BOOL;
+	PausaEstado: BOOL;
+  
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// MODO AUTOMATICO
+IF NOT SelectorManual THEN
+    // Bloques funcionales
+    Coordinador(
+        // añadir todos los benido de las tareas, para definir los inputs que ponen en true las transiciones de coordinador
+        
+        //PROBAR PORQ NO ESTAMOS SEGUROIS CONT := CONT,
+        cont := 0,
+        UnidadesSolicitadas := NumPiezasDes,
+        Tapas := Tapas,
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+    // Indicadores de sincronizacion
+    Benido:= TRUE,
+    Ejecuta:= CondicionInicial AND CondicionMarcha AND PulsadorMarcha AND NumPiezasDes > cont,
+    // Indicadores de control
+        //Resume: BOOL;
+        //StepByStep: BOOL;
+    // Parametros de sincronizacion
+    PaleSituado:= SituarPale.Acabhe,
+    Alimentado:= Alimentar.Acabhe,
+    Cargado:= Cargar.Acabhe,
+    Girado:= Girar.Acabhe,
+    Medido:= Medir.Acabhe,
+    Rechazada:= Rechazar.Acabhe,
+    Descargada:= Descargar.Acabhe,
+    Transferido:= TransferirPale.Acabhe,
+    
+    
+    // Parametros
+    CondicionInicial:= CondicionInicial,
+
+    //TapaAuxRot : ST_POSICION; 
+    //CLK: FB_Clock;
+    
+    TapaDeseada := TapaDeseada,
+    //NumPiezasDes: UINT;
+
+        
+        );
+        
+    SituarPale(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido:= NOT Coordinador.SituaPale,
+        Ejecuta := Coordinador.SituaPale,
+      //  TpoPaleEntrada := TpoPaleEntrada,
+        PresenciaPale := PresenciaPale,
+        CodigoPaleBit0 := CodigoPaleBit0,
+        CodigoPaleBit1 := CodigoPaleBit1,
+        CodigoPaleBit2 := CodigoPaleBit2
+        );
+        
+    Cargar(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Carga,
+        Ejecuta := Coordinador.Carga,
+        Tapas := Tapas
+        
+        );
+    
+    
+    Descargar(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Descarga,
+        Ejecuta := Coordinador.Descarga,
+        cont := cont
+        );
+    
+    TransferirPale(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Transfiere,
+        Ejecuta := Coordinador.Transfiere,
+        //PresenciaPale := PresenciaPale
+        );
+       
+     Alimentar(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Alimenta,
+        Ejecuta := Coordinador.Alimenta,
+        //PresenciaPale := PresenciaPale
+        );
+     
+    Girar(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Gira,
+        Ejecuta := Coordinador.Gira,
+        Tapas := Tapas,
+        TapaAuxRot := TapaAuxRot
+        //PresenciaPale := PresenciaPale
+        );
+        
+        Medir(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+         SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Mide,
+        Ejecuta := Coordinador.Mide,
+        Tapas := Tapas
+        //PresenciaPale := PresenciaPale
+        );
+        
+        Rechazar(
+        SFCPause := NOT ReiniciaEstado AND PausaEstado,
+        SFCReset := ReiniciaEstado,
+        Benido := NOT Coordinador.Rechaza,
+        Ejecuta := Coordinador.Rechaza,
+        //PresenciaPale := PresenciaPale
+        );
+
+    // Acciones
+    // DesconectaEstacion :=
+    LamparaAlarma := Coordinador.LamparaAlarma;
+    LamparaMarcha := Coordinador.LamparaMarcha;
+    // AvisadorSonoro :=
+
+  //  CintaActiva := NOT PausaEstado 
+    // AND (SituarPale.CintaActiva OR TransferirPale.CintaActiva);
+   CintaActiva := (SituarPale.CintaActiva OR TransferirPale.CintaActiva);
+    // CintaMotorInvierte :=
+    RetenedorBaja:= TransferirPale.RetenedorBaja;
+    AlimentadorAvanza := Alimentar.AlimentadorAvanza;
+	CintaActiva:= SituarPale.CintaActiva;
+    CintaInvierte:= SituarPale.CintaInvierte;
+    RetenedorBaja:= SituarPale.RetenedorBaja;
+    AvisadorSonoro:= SituarPale.AvisadorSonoro;
+	CargadorAvanza:= Cargar.CargadorAvanza;
+    CargadorBaja:= Cargar.CargadorBaja;
+    CargadorCierra:= Cargar.CargadorCierra;
+    PlatoEmpujadorAvanza:=Girar.PlatoEmpujadorAvanza;
+    PlatoRetenedorAtras:=Girar.PlatoRetenedorAtras;
+    DescargadorAvanza:= Descargar.DescargadorAvanza;
+    DescargadorBaja:= Descargar.DescargadorBaja;
+    DescargadorCierra:= Descargar.DescargadorCierra;
+    MedidorBaja:=Medir.MedidorBaja;
+    RechazadorAvanza:=Rechazar.RechazadorAvanza;
+    RechazadorRetrocede:=Rechazar.RechazadorRetrocede;
+    RechazadorBaja:=Rechazar.RechazadorBaja;
+    RechazadorSucciona:=Rechazar.RechazadorSucciona;
+END_IF
+
+
+// Parametros de salida
+
+    
+//CondicionMarcha := (UnidadesSolicitadas > 0);
+
+IF SelectorManual THEN
+    CodigoPale.0 := CodigoPaleBit0;
+    CodigoPale.1 := CodigoPaleBit1;
+    CodigoPale.2 := CodigoPaleBit2;
+ELSE 
+    CodigoPale := SituarPale.CodigoPale;
+END_IF
+
+// UnidadesPendientes -> Coordinador
+// UnidadesRealizadas -> Coordinador]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Estacion_1">
+      <LineId Id="222" Count="3" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="574" Count="1" />
+      <LineId Id="434" Count="2" />
+      <LineId Id="733" Count="0" />
+      <LineId Id="441" Count="0" />
+      <LineId Id="443" Count="2" />
+      <LineId Id="447" Count="2" />
+      <LineId Id="451" Count="7" />
+      <LineId Id="576" Count="0" />
+      <LineId Id="459" Count="3" />
+      <LineId Id="465" Count="5" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="241" Count="4" />
+      <LineId Id="561" Count="0" />
+      <LineId Id="732" Count="0" />
+      <LineId Id="248" Count="11" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="569" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="282" Count="6" />
+      <LineId Id="292" Count="7" />
+      <LineId Id="303" Count="1" />
+      <LineId Id="582" Count="0" />
+      <LineId Id="585" Count="5" />
+      <LineId Id="584" Count="0" />
+      <LineId Id="592" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="593" Count="3" />
+      <LineId Id="599" Count="1" />
+      <LineId Id="597" Count="0" />
+      <LineId Id="583" Count="0" />
+      <LineId Id="601" Count="0" />
+      <LineId Id="603" Count="5" />
+      <LineId Id="610" Count="0" />
+      <LineId Id="602" Count="0" />
+      <LineId Id="611" Count="0" />
+      <LineId Id="613" Count="4" />
+      <LineId Id="619" Count="0" />
+      <LineId Id="612" Count="0" />
+      <LineId Id="305" Count="8" />
+      <LineId Id="580" Count="0" />
+      <LineId Id="314" Count="1" />
+      <LineId Id="327" Count="0" />
+      <LineId Id="623" Count="2" />
+      <LineId Id="349" Count="0" />
+      <LineId Id="627" Count="1" />
+      <LineId Id="350" Count="0" />
+      <LineId Id="629" Count="1" />
+      <LineId Id="725" Count="1" />
+      <LineId Id="724" Count="0" />
+      <LineId Id="727" Count="0" />
+      <LineId Id="729" Count="2" />
+      <LineId Id="728" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="348" Count="0" />
+      <LineId Id="329" Count="1" />
+      <LineId Id="335" Count="12" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

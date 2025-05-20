@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{8bc1eea5-9690-4a34-bea8-040af1538968}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+// FMS-203 - Monolitico 
+
+VAR
+    // Variables locales
+    CodigoPale: BYTE;
+    
+    // Bloques funcionales
+    Estacion: FB_Estacion;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT Estacion.SelectorManual THEN
+    Estacion();
+    CodigoPale := Estacion.CodigoPale;
+ELSE
+	CodigoPale.0 := Estacion.CodigoPaleBit0;
+    CodigoPale.1 := Estacion.CodigoPaleBit1;
+    CodigoPale.2 := Estacion.CodigoPaleBit2;    
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="153" Count="6" />
+      <LineId Id="77" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

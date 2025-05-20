@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_GEMMA" Id="{74027af2-481c-407f-9b80-0a4d063d904c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_GEMMA :
+(
+    // Modos de la Guia de Estudio de los Modos de Marcha y Parada
+
+
+    // Procedimientos de parada
+    A1, //  0: Parada en el estado inicial 
+  
+    A2, //  1: Parada solicitada a final de ciclo 
+
+    A3, //  2: Parada solicitada en un estado determinado 
+
+    A4, //  3: Parada obtenida 
+
+    A5, //  4: Preparacion para la recuperacion del fallo 
+
+    A6, //  5: Situando la PO en el estado inicial 
+
+    A7, //  6: Situando la PO en un estado determinado 
+
+
+    // Procedimientos de funcionamiento 
+
+    F1, //  7: Produccion normal 
+
+    F2, //  8: Secuencia de preparacion 
+  
+    F3, //  9: Secuencia de finalizacion 
+ 
+    F4, // 10: Verificacion en desorden 
+
+    F5, // 11: Verificacion en orden 
+
+    F6, // 12: Secuencia de prueba 
+
+
+    // Procedimientos de fallo 
+  
+    D1, // 13: Parada de emergencia 
+   
+    D2, // 14: Diagnostico y/o tratamiento de los fallos 
+   
+    D3  // 15: Produccion a pesar de los fallos 
+
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

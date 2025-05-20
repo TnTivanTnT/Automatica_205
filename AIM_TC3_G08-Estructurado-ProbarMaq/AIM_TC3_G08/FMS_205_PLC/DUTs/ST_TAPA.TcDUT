@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_TAPA" Id="{54e7f724-4a7c-404d-9a86-f2903f60ea38}">
+    <Declaration><![CDATA[TYPE ST_TAPA :
+STRUCT
+	Metalica : BOOL;
+	Clara : BOOL;
+	Alta : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

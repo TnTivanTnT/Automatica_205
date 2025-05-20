@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_POSICION" Id="{651d9067-8a35-481b-b3f7-17d03fad97d1}">
+    <Declaration><![CDATA[TYPE ST_POSICION :
+STRUCT
+	Tapa : ST_TAPA;
+	Ocupada : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
